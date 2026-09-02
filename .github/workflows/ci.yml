@@ -1,3 +1,17 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Construire l'image Docker
+        run: docker build -t flask-demo:ci .
+
   test:
     runs-on: ubuntu-latest
     needs: build
@@ -25,3 +39,10 @@
 
       - name: Nettoyer
         run: docker stop test-container && docker rm test-container
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Simuler le déploiement
+        run: echo "Déploiement simulé - à configurer avec un vrai serveur plus tard"
