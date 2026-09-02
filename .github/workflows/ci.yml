@@ -41,8 +41,12 @@ jobs:
         run: docker stop test-container && docker rm test-container
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: test
     steps:
-      - name: Simuler le déploiement
-        run: echo "Déploiement simulé - à configurer avec un vrai serveur plus tard"
+      - name: recuperer
+        uses: actions/checkout@v4
+      - name: arreter cont precedents
+        run:  docker stop flask-app || true && docker rm flask-app || true  
+      - name: Construire et lancer le conteneur
+        run: docker build -t flask-demo:latest . && docker run -d -p 5000:5000 --name flask-app flask-demo:latest
