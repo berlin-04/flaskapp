@@ -68,7 +68,10 @@ def home():
 def health():
     return jsonify({"status": "ok"}), 200
 
-init_db()
+try:
+    init_db()
+except Exception as e:
+    print(f"Attention : impossible d'initialiser la base au démarrage : {e}")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
