@@ -5,7 +5,7 @@ on: [push]
 jobs:
   hello:
    runs-on: ubuntu-latest
-  steps:
+   steps:
   
     - name: Dire bonjour
       run: echo "la pipeline fonctionne!"
