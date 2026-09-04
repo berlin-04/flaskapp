@@ -34,6 +34,9 @@ jobs:
       - name: charger limage docker 
         run: docker load -i flask-demo.tar
 
+      - name: Nettoyer un éventuel conteneur résiduel
+        run: docker rm -f test-container || true
+
       - name: Lancer le conteneur
         run: docker run -d -p 5001:5000 --name test-container flask-demo:ci
 
