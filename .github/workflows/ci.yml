@@ -4,23 +4,35 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Récupérer le code
         uses: actions/checkout@v4
 
       - name: Construire l'image Docker
         run: docker build -t flask-demo:ci .
+
+      - name: expoorter limage en fichier  
+        run: docker save flask-demo:ci -o  flask-demo.tar
+
+      - name: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: flask-image
+          path: flask-demo.tar
+
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build
     steps:
-      - name: Récupérer le code
-        uses: actions/checkout@v4
-
-      - name: Construire l'image Docker
-        run: docker build -t flask-demo:ci .
+      - name: download
+        uses: actions/download-artifact@v4
+        with:
+          name: flask-image
+ 
+      - name: charger limage docker 
+        run: docker load -i flask-demo.tar
 
       - name: Lancer le conteneur
         run: docker run -d -p 5000:5000 --name test-container flask-demo:ci
@@ -49,4 +61,4 @@ jobs:
       - name: arreter cont precedents
         run:  docker stop flask-app || true && docker rm flask-app || true  
       - name: Construire et lancer le conteneur
-        run: docker build -t flask-demo:latest . && docker run -d -p 5000:5000 --name flask-app --network flask-docker-demo_default flask-demo:latest
+        run: docker build -t flask-demo:latest . && docker run -d -p 5000:5000 --name flask-app flask-demo:latest
