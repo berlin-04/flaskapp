@@ -24,8 +24,8 @@ jobs:
       - name: connexio
         uses: docker/login-action@v3
         with:
-          name: ${{secret.DOCKERHUB_USERNAME}}
-          password: ${{secret.DOCKERHUB_TOKEN}}
+          name: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
      
       - name: tagons
         run: docker tag flask-demo:ci berlin04/flask-demo:latest
