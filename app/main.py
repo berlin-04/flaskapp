@@ -57,7 +57,7 @@ def home():
     count, from_cache = get_visit_count()
 
     return jsonify({
-        "message": "Hello depuis Docker sur Kali !",
+        "message": "Hello depuis test pull request !",
         "visits": count,
         "from_cache": from_cache,
         "time": datetime.now().isoformat(),
